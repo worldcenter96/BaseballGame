@@ -24,13 +24,11 @@ public class PlayGame {
             inputList.setInputNumList(input);
 
             // 입력 값 예외 처리
-            boolean duplicate = hasDuplicate();
             boolean valid = isValid(input);
-            boolean numDigit = validNum(input);
-            if (duplicate || valid || numDigit) {
+            if (!valid) {
+                System.out.println("유효하지 않은 값을 입력하였습니다.");
                 continue Game;
             }
-
 
             // 게임 진행횟수 증가
             challenge++;
@@ -67,52 +65,31 @@ public class PlayGame {
     }
 
     // 예외처리
-    private boolean hasDuplicate() {
-        boolean duplicate = false;
+    private boolean isValid(String input) {
+        // 중복 체크
         for (int i = 0; i < inputList.size(); i++) {
             for (int j = i + 1; j < inputList.size(); j++) {
                 if (inputList.getInputNumList(i) == inputList.getInputNumList(j)) {
-                    duplicate = true;
-                    break;
+                    return false;
                 }
 
             }
-            if (duplicate) {
-                break;
-            }
+
         }
 
-        if (duplicate) {
-            System.out.println("중복되는 값이 있습니다.");
-        }
-
-        return duplicate;
-    }
-
-    private boolean isValid(String input) {
-        boolean valid = false;
+        // 입력 숫자의 유효성 체크
         for (char ch : input.toCharArray()) {
-            if (ch >= '1' && ch <= '9') {
-                valid = true;
-            } else {
-                valid = false;
-                break;
+            if (ch < '1' || ch > '9') {
+                return false;
             }
-        }
-        if (!valid) {
-            System.out.println("유효하지 않은 입력 값이 있습니다.");
 
         }
-        return !valid;
 
-    }
-
-    private boolean validNum(String input) {
-        boolean numDigit = true;
+        // 자리 수 체크
         if (input.length() != level) {
-            System.out.println(level + "자리 숫자를 입력해주세요");
-            numDigit = false;
+            return false;
         }
-        return !numDigit;
+        return true;
     }
+
 }
